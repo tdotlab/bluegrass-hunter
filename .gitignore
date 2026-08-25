@@ -1,0 +1,11 @@
+# Local secrets and environments
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Generated operational output
+reports/latest.md
+reports/latest.json
+reports/runs/

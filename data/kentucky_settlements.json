@@ -1,0 +1,49 @@
+{
+  "state": "Kentucky",
+  "generated_at": "2026-08-24T23:50:39.480937+00:00",
+  "sources": [
+    {
+      "name": "USGS GNIS",
+      "url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/GeographicNames/DomesticNames/DomesticNames_KY_Text.zip"
+    },
+    {
+      "name": "U.S. Census Gazetteer 2025",
+      "url": "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2025_Gazetteer/2025_gaz_place_21.txt"
+    }
+  ],
+  "searchable_count": 5193,
+  "parts": [
+    "kentucky_settlements/part-01.json",
+    "kentucky_settlements/part-02.json",
+    "kentucky_settlements/part-03.json",
+    "kentucky_settlements/part-04.json",
+    "kentucky_settlements/part-05.json",
+    "kentucky_settlements/part-06.json",
+    "kentucky_settlements/part-07.json",
+    "kentucky_settlements/part-08.json",
+    "kentucky_settlements/part-09.json",
+    "kentucky_settlements/part-10.json",
+    "kentucky_settlements/part-11.json",
+    "kentucky_settlements/part-12.json",
+    "kentucky_settlements/part-13.json",
+    "kentucky_settlements/part-14.json",
+    "kentucky_settlements/part-15.json",
+    "kentucky_settlements/part-16.json",
+    "kentucky_settlements/part-17.json",
+    "kentucky_settlements/part-18.json",
+    "kentucky_settlements/part-19.json",
+    "kentucky_settlements/part-20.json",
+    "kentucky_settlements/part-21.json",
+    "kentucky_settlements/part-22.json",
+    "kentucky_settlements/part-23.json",
+    "kentucky_settlements/part-24.json",
+    "kentucky_settlements/part-25.json",
+    "kentucky_settlements/part-26.json",
+    "kentucky_settlements/part-27.json",
+    "kentucky_settlements/part-28.json",
+    "kentucky_settlements/part-29.json",
+    "kentucky_settlements/part-30.json",
+    "kentucky_settlements/part-31.json",
+    "kentucky_settlements/part-32.json"
+  ]
+}

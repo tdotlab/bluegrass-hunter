@@ -1,0 +1,17 @@
+[project]
+name = "kentucky-web-scout"
+version = "0.2.0"
+description = "Research and rank local businesses that may need better websites"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi",
+  "httpx",
+  "pydantic>=2.0",
+  "uvicorn[standard]",
+]
+
+[project.scripts]
+lead-research = "main:cli"
+
+[tool.setuptools]
+py-modules = ["agent", "geography", "main", "models", "report", "scoring"]

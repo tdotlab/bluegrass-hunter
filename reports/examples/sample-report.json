@@ -1,0 +1,34 @@
+{
+  "target": "Independent service businesses in Example County, Kentucky",
+  "method_note": "Synthetic example only. The names, evidence, URLs, and scores below are fictional.",
+  "leads": [
+    {
+      "business_name": "Example Local Service Co.",
+      "town": "Exampleville",
+      "website_status": "social_or_directory_only",
+      "activity_status": "confirmed_active",
+      "locality_tier": "tier_a_exact_town",
+      "evidence_quality": 4,
+      "business_legitimacy": 4,
+      "service_value": 4,
+      "local_fit": 5,
+      "evidence": [
+        "Synthetic directory and social evidence used to illustrate the report format."
+      ],
+      "source_urls": [
+        "https://example.com/directory",
+        "https://example.com/social"
+      ],
+      "observed_problems": [
+        "No owned website was found in this synthetic example."
+      ],
+      "contradictions": [],
+      "verification_notes": "Synthetic example; not a real business or research result.",
+      "reasoning": "Illustrates how evidence and website status appear in a report.",
+      "contact_hint": null
+    }
+  ],
+  "exclusions": [
+    "Synthetic exclusion showing where rejected candidates would be recorded."
+  ]
+}

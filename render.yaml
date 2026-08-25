@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: research-agent
+    runtime: python
+    plan: free
+    buildCommand: python scripts/build_place_index.py && pip install -e .
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - fromGroup: DeepSeek
+      - key: RESEARCH_TOKEN
+        generateValue: true
+      - key: LEAD_AGENT_MODEL
+        value: deepseek-v4-flash
