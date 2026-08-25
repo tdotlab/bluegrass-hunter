@@ -1,35 +1,73 @@
-# Kentucky Web Scout
+<div align="center">
 
-A small, open-source research agent for finding local businesses that may have no owned website or a weak web presence.
+<img src="assets/bluegrass-hunter-banner.svg" alt="Bluegrass Hunter — a field guide to the web">
 
-The project is intentionally narrow right now: its region-expansion database covers Kentucky. The single-location research endpoint can still accept any location string, but the settlement-by-settlement region workflow is Kentucky-specific until another state index is added.
+# Bluegrass Hunter
 
-## What it does
+**A small research agent for finding the businesses the web forgot.**
 
-1. Takes a business category and either one location or a Kentucky region.
-2. Uses Tavily for live web search.
-3. Gives the evidence to DeepSeek for structured synthesis.
-4. Scores candidates deterministically for evidence quality, legitimacy, service value, local fit, and website weakness.
-5. Produces a JSON or Markdown report for human review.
+[![Python](https://img.shields.io/badge/python-3.11%2B-16324F?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![Search](https://img.shields.io/badge/live_search-Tavily-2E7D62?style=flat-square)](https://tavily.com/)
+[![Synthesis](https://img.shields.io/badge/synthesis-DeepSeek-CB8B3E?style=flat-square)](https://www.deepseek.com/)
+[![Scope](https://img.shields.io/badge/scope-Kentucky-6B4F3A?style=flat-square)](https://github.com/silascroe/bluegrass-hunter)
 
-It stops at research. It does not contact businesses, send email, or make claims that a business is inactive based on one missing search result.
+</div>
 
-## How the Kentucky region workflow works
+> Bluegrass Hunter asks a stubbornly practical question: which local businesses are real, active, and strangely absent from the web?
+
+It is not an email cannon. It does not contact anyone. It builds a case file: search evidence, website status, local fit, contradictions, and a deterministic priority score for a human to inspect.
+
+## The short version
+
+A normal search engine can find a business. It is much worse at understanding a region like “the triangle between Lexington, Maysville, and Morehead” and remembering every small settlement in between.
+
+So we built the missing middle:
+
+1. A Kentucky settlement index, assembled from public USGS and Census data.
+2. A town-by-town search pass using Tavily.
+3. DeepSeek to read the evidence and turn it into structured findings.
+4. Deterministic scoring so the ranking is not pure model vibes.
+5. A JSON or Markdown report that a person can actually review.
+
+```mermaid
+flowchart LR
+    A["Kentucky settlement index"] --> B["Town-by-town queries"]
+    B --> C["Tavily live search"]
+    C --> D["DeepSeek synthesis"]
+    D --> E["Ranked research report"]
+```
+
+The model is only one part of the machine. The geography, search discipline, evidence rules, and scoring are what make the output useful.
+
+## What it can answer
+
+- Which businesses appear to operate in a specific Kentucky town?
+- Which have no discoverable owned website?
+- Which rely on Facebook or directory listings?
+- Which have a weak but existing site?
+- Which candidates are probably regional companies pretending to be local?
+- Which leads deserve a closer human look?
+
+The project deliberately stops before outreach. A missing search result is not proof that a business is closed, and a directory listing is not proof that a business is active.
+
+## The Kentucky map is data, not magic
 
 The checked-in settlement index combines:
 
-- USGS Geographic Names Information System (GNIS) populated places.
+- USGS Geographic Names Information System populated places.
 - The 2025 U.S. Census Gazetteer place file.
-- A deterministic deduplication and classification pass.
-- A point-in-polygon filter for named anchor towns.
+- Deterministic deduplication and place classification.
+- Point-in-polygon filtering for named anchor towns.
 
-Historical places remain in the source data for provenance but are excluded from the searchable queue. The index can be regenerated with:
+The current index contains **6,359 settlements**, of which **5,193 are searchable**. Historical places remain in the source data for provenance but are excluded from the search queue.
+
+Regenerate the local index with:
 
 ```bash
 python scripts/build_place_index.py
 ```
 
-The region endpoint can either expand a triangle or other polygon from three to five anchors, or accept an explicit list of settlement names:
+The region endpoint accepts either three to five anchors or an explicit list of settlements:
 
 ```json
 {
@@ -41,7 +79,33 @@ The region endpoint can either expand a triangle or other polygon from three to 
 }
 ```
 
-Send that JSON to `POST /research-region`. Use `"output_format": "markdown"` for a downloadable Markdown report.
+Send that JSON to `POST /research-region`. Set `"output_format": "markdown"` for a downloadable Markdown report.
+
+## If you are not technical
+
+The simplest description is this:
+
+We gave a research program a map of Kentucky, taught it to search one small town at a time, connected it to live web search, and gave the resulting evidence to another AI to organize. Then we made the ranking rules explicit so the result could be inspected instead of merely trusted.
+
+That is what an agent is here: not a magic brain, but a sequence of jobs wired together.
+
+## Run it locally
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -e .
+cp .env.example .env
+```
+
+Required environment variables:
+
+```bash
+DEEPSEEK_API_KEY=...
+TAVILY_API_KEY=...
+```
+
+Optional settings include `RESEARCH_TOKEN` and `LEAD_AGENT_MODEL`. Never commit keys or real operational reports.
 
 ## API
 
@@ -70,39 +134,25 @@ Region expansion:
 }
 ```
 
-If `RESEARCH_TOKEN` is set, send it as a Bearer token. Keep the token and API keys in environment variables; never commit them.
+## Where to look around
 
-## Local setup
+If you want to understand the project without reading every Python file:
 
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -e .
-cp .env.example .env
-```
-
-Required integrations:
-
-- `DEEPSEEK_API_KEY` — reasoning/synthesis.
-- `TAVILY_API_KEY` — live web search.
-
-Optional settings include `RESEARCH_TOKEN` and `LEAD_AGENT_MODEL`. See `.env.example`.
-
-## Render
-
-`render.yaml` defines the Python web service, builds the settlement index during deployment, starts FastAPI with Uvicorn, and links the deployment to the existing `DeepSeek` environment group. The public source repository contains the deployment shape, not any secret values.
-
-## Repository layout
-
-- `agent.py` — search/reasoning workflow.
-- `geography.py` — Kentucky index loading, anchor resolution, and polygon selection.
-- `scripts/build_place_index.py` — reproducible public-data builder.
-- `data/kentucky_settlements.json` — generated settlement index.
-- `scoring.py` — deterministic ranking.
-- `report.py` — JSON/Markdown report rendering.
-- `reports/examples/` — synthetic example output.
-- `docs/research-rubric.md` — scoring notes.
+- [Synthetic sample report](reports/examples/sample-report.json)
+- [Research rubric](docs/research-rubric.md)
+- [Settlement index manifest](data/kentucky_settlements.json)
+- [Index-building script](scripts/build_place_index.py)
+- [The geography layer](geography.py)
+- [The research workflow](agent.py)
 
 ## Status
 
-This is a working prototype, not a finished commercial product. The public release is meant to show the architecture and make the research workflow reproducible. Real operational reports and contact details stay outside the public release.
+This is a working prototype and a personal open-source artifact, not a finished commercial product. It is intentionally Kentucky-specific for now.
+
+The public repository contains the reproducible architecture and synthetic examples. Real operational reports and contact details stay out of the release.
+
+<div align="center">
+
+*Built as a field experiment in delegation, geography, and the stubborn little businesses that fall between the cracks of ordinary search.*
+
+</div>
