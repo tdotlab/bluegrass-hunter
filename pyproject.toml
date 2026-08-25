@@ -1,7 +1,7 @@
 [project]
-name = "kentucky-web-scout"
+name = "bluegrass-hunter"
 version = "0.2.0"
-description = "Research and rank local businesses that may need better websites"
+description = "A Kentucky field guide for researching local businesses and missing websites"
 requires-python = ">=3.11"
 dependencies = [
   "fastapi",
