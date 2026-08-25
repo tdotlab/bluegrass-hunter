@@ -17,7 +17,7 @@ from geography import expand_region, select_settlements
 from report import render_markdown
 
 
-app = FastAPI(title="Kentucky Web Scout")
+app = FastAPI(title="Bluegrass Hunter")
 
 
 OutputFormat = Literal["json", "markdown"]
